@@ -5,7 +5,7 @@ Given s = "hello", return "olleh".*/
 
 import java.util.Scanner;
 
-public class Solution 
+public class Reverse_String 
 {
     public static String reverseString(String s) 
     {
