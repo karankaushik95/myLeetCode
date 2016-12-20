@@ -15,7 +15,9 @@ public class Anagram
        char[] temp1 = s.toCharArray();
        char[] temp2 = t.toCharArray();
        int i;
-       loop: for(i=0;i<temp2.length;i++)
+       if(temp1.length != temp2.length)
+       	   return false;      
+ loop: for(i=0;i<temp2.length;i++)
        {
            int j=0;
            for(j=0;j<temp2.length;j++)
