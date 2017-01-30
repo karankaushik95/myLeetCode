@@ -1,0 +1,83 @@
+import java.util.*;
+import java.io.*;
+
+class AttributeRelevanceAnalysis{
+
+	double InitialEntropy(){
+		return(0.5*(Math.log(2)/Math.log(2)))*2;
+	}	
+	
+	int[] Count() throws IOException {
+		Scanner input = new Scanner(new File("PlayTennis.data"));
+		int numbers[] = new int[2];
+		while (input.hasNextLine())
+		{		
+			String splitset = input.nextLine();
+			String[] parts = splitset.split(",");
+			if(parts[4].equals("Yes"))
+				numbers[0]++;
+			else if(parts[4].equals("No"))
+				numbers[1]++;
+			else
+				continue;
+		}
+		return numbers;
+	}
+	
+	double CalculateSecondaryEntropy(int i) throws IOException{
+		AttributeRelevanceAnalysis Solution = new AttributeRelevanceAnalysis();
+		int numbers[] = Solution.Count();
+		Scanner input = new Scanner(new File("PlayTennis.data")); 
+		List <List<String>> TempList = new ArrayList<List<String>>();
+		while (input.hasNextLine()){		
+			String DataLine = input.nextLine();
+			String[] parts = DataLine.split(",");
+			List<String> x = new ArrayList<String>();
+			x.add(parts[i]);
+			x.add(parts[parts.length-1]);
+			TempList.add(x);
+		}
+		ArrayList<String[]> tempoList = new ArrayList<String[]>();
+		for (List<String> stringList : TempList){
+			tempoList.add((String[])stringList.toArray());
+		}	
+		String [][]list = (String[][])tempoList.toArray();
+		for(String[] something: list)
+			System.out.println(something);
+		return 4.0;
+	}
+	public static void main(String[] args)	throws IOException {
+		AttributeRelevanceAnalysis Solution = new AttributeRelevanceAnalysis();
+		double SecondaryEntropy = Solution.CalculateSecondaryEntropy(2);
+		/*loop:while(true){
+			//System.out.println("Enter your choice.\n\n\n1.Calculate Initial Entropy with respect to 'Play' Attribute\n2.Calculate Entropy for 'Outlook' Attribute\n3.Calculate Entropy for 'Temp' Attribute\n4.Calculate Entropy for 'Humidity' Attribute\n5.Calculate Entropy for 'Play' Attribute\n6.Compute Relevance Analysis\n7.Exit\n");
+			int choice = (new Scanner(System.in)).nextInt();
+			switch(choice){
+				case 1:
+					double InitialEntropy = Solution.InitialEntropy();
+					System.out.println("Initial Entropy = "+InitialEntropy);
+					break;
+				case 2:
+					SecondaryEntropy = Solution.CalculateSecondaryEntropy(choice-1);
+					break;
+				case 3:
+				    SecondaryEntropy = Solution.CalculateSecondaryEntropy(choice-1);
+					break;
+				case 4:
+					SecondaryEntropy = Solution.CalculateSecondaryEntropy(choice-1);
+					break;
+				case 5:
+					SecondaryEntropy = Solution.CalculateSecondaryEntropy(choice-1);
+					break;
+				case 6:
+					SecondaryEntropy = Solution.CalculateSecondaryEntropy(choice-1);
+					break;
+				case 7:
+					break loop;
+				default:
+					System.out.println("Incorrect Choice");
+			}
+		}
+		List <Double> SecondaryEntropies = new ArrayList<Double>();*/
+	}
+}
