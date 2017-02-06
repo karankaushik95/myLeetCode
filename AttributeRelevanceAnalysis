@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 class AttributeRelevanceAnalysis{
-
+	
 	public static String[][] sort(String[][] array, final int sortIndex) {
 
 
@@ -21,19 +21,13 @@ class AttributeRelevanceAnalysis{
         return array;
 
     }
-	double IntermediateEntropy(){
 	
-	
-	}
-	
-	double UniqueTime(String[][] Attributes){
-	
-		int i = Attributes.length;
-		
-	}
-	
-	double InitialEntropy(){
-		return(0.5*(Math.log(2)/Math.log(2)))*2;
+	double Entropy(int yes, int no, double prob){
+		double poy,pon;
+		poy = (double)yes/(yes+no);
+		pon = (double)no/(yes+no);
+		System.out.println(poy+" "+pon);
+		return	prob*((-poy*(Math.log(poy)/Math.log(2)))-(pon*(Math.log(pon)/Math.log(2))));
 	}	
 	
 	int[] Count() throws IOException {
@@ -43,9 +37,9 @@ class AttributeRelevanceAnalysis{
 		{		
 			String splitset = input.nextLine();
 			String[] parts = splitset.split(",");
-			if(parts[4].equals("Yes"))
+			if(parts[0].equalsIgnoreCase("Yes"))
 				numbers[0]++;
-			else if(parts[4].equals("No"))
+			else if(parts[0].equalsIgnoreCase("No"))
 				numbers[1]++;
 			else
 				continue;
@@ -55,7 +49,7 @@ class AttributeRelevanceAnalysis{
 	
 	double CalculateSecondaryEntropy(int i) throws IOException{
 		AttributeRelevanceAnalysis Solution = new AttributeRelevanceAnalysis();
-		int numbers[] = Solution.Count();
+		int count[] = Solution.Count();
 		Scanner input = new Scanner(new File("PlayTennis.data")); 
 		List <List<String>> TempList = new ArrayList<List<String>>(); //List to store Attributes and Play Value
 		while (input.hasNextLine()){		
@@ -67,18 +61,30 @@ class AttributeRelevanceAnalysis{
 			TempList.add(x);
 		}
 		
-		final String[][] ListofStuff = new String[TempList.size()][]; //Converting to StringArray
+		final String[][] SecondaryAttributeList = new String[TempList.size()][]; //Converting to StringArray
 		int j = 0;
 		for (List<String> l : TempList) 
-  		ListofStuff[j++] = l.toArray(new String[l.size()]);
+  		SecondaryAttributeList[j++] = l.toArray(new String[l.size()]);
 
-		sort(ListofStuff,0); //Sorting StringArray Alphabetically
+		sort(SecondaryAttributeList,0); //Sorting StringArray Alphabetically
+		
+		double secondaryentropy = 0;
+		
+		for(int i=0;i<SecondaryAttributeList.length;i++){
+			for(j=i;j<SecondaryAttributeList.length;j++){
+				do{
+					int ele, yes, no;
+				}
+			while(SecondaryAttributeList[i][0]==SecondaryAttributeList[i][0]); 	
+			}	
+		}
+		
+		
 		
 		for(j=0;j<14;j++){	//testprint
 			for(int k=0;k<=1;k++)
-				System.out.print(ListofStuff[j][k]+" ");
+				System.out.print(SecondaryAttributeList[j][k]+" ");
 		System.out.println();
-		System.out.print(ListofStuff.length);
 		}
 		
 		return 4.0;
@@ -86,12 +92,13 @@ class AttributeRelevanceAnalysis{
 	public static void main(String[] args)	throws IOException {
 		AttributeRelevanceAnalysis Solution = new AttributeRelevanceAnalysis();
 		double SecondaryEntropy = Solution.CalculateSecondaryEntropy(2);
+		int count[] = Solution.Count();
 		/*loop:while(true){
 			System.out.println("Enter your choice.\n\n\n1.Calculate Initial Entropy with respect to 'Play' Attribute\n2.Calculate Entropy for 'Outlook' Attribute\n3.Calculate Entropy for 'Temp' Attribute\n4.Calculate Entropy for 'Humidity' Attribute\n5.Calculate Entropy for 'Play' Attribute\n6.Compute Relevance Analysis\n7.Exit\n");
 			int choice = (new Scanner(System.in)).nextInt();
 			switch(choice){
 				case 1:
-					double InitialEntropy = Solution.InitialEntropy();
+					double InitialEntropy = Solution.Entropy(count[0], count[1], 1.0);
 					System.out.println("Initial Entropy = "+InitialEntropy);
 					break;
 				case 2:
