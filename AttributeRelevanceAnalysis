@@ -1,151 +1,100 @@
 import java.util.*;
 import java.io.*;
 
-class AttributeRelevanceAnalysis{
-	
-	double functionname(String array[][], int number){
-		AttributeRelevanceAnalysis Solution = new AttributeRelevanceAnalysis();
-		String temp;
-		double data= 0.0;
-		double probability=0;
-		int truenos = 0,falsenos = 0;
-		int i=1,j=1;
-		temp=array[0][0];
-		while(i<array.length){
-			if(array[i][0].equalsIgnoreCase(temp))
-			{
-				if(array[i][1].equalsIgnoreCase("Yes"))
-					truenos++;
-				else
-					falsenos++;
-				i++;
-				j++;
-				probability = (double)j/(double)number;
-			}
-			else
-			{
-				temp=array[i][0];
-				data+=Solution.Entropy(truenos,falsenos,probability);
-				truenos=0;
-				falsenos=0;
-				j=1;
-			}
-		}
-		return data;
-	}
-	
-	public static String[][] sort(String[][] array, final int sortIndex) {
+class Attribute {
 
-
-        if (array.length < 2) {
-            return array;
-        }
-
-
-        Arrays.sort(array, new Comparator<String[]>() {
-
-            public int compare(String[] o1, String[] o2) {
-                return o1[sortIndex].compareToIgnoreCase(o2[sortIndex]);
-            }
-        });
-
-        return array;
-
-    }
-	
-	double Entropy(int yes, int no, double prob){
-		double poy,pon;
-		poy = (double)yes/(yes+no);
-		pon = (double)no/(yes+no);
-		//System.out.println(poy+" "+pon);
-		return	prob*((-poy*(Math.log(poy)/Math.log(2)))-(pon*(Math.log(pon)/Math.log(2))));
-	}	
-	
 	int[] Count() throws IOException {
 		Scanner input = new Scanner(new File("PlayTennis.data"));
 		int numbers[] = new int[2];
-		while (input.hasNextLine())
-		{		
+		while (input.hasNextLine()) {
 			String splitset = input.nextLine();
 			String[] parts = splitset.split(",");
-			if(parts[0].equalsIgnoreCase("Yes"))
+			if (parts[0].equalsIgnoreCase("Yes"))
 				numbers[0]++;
-			else if(parts[0].equalsIgnoreCase("No"))
+			else if (parts[0].equalsIgnoreCase("No"))
 				numbers[1]++;
 			else
 				continue;
 		}
+		input.close();
 		return numbers;
 	}
-	
-	double CalculateSecondaryEntropy(int i) throws IOException{
-		AttributeRelevanceAnalysis Solution = new AttributeRelevanceAnalysis();
+
+	double RelevanceAnalysis(Attribute Solution) throws IOException {
 		int count[] = Solution.Count();
-		int blah = count[0]+count[1];
-		Scanner input = new Scanner(new File("PlayTennis.data")); 
-		List <List<String>> TempList = new ArrayList<List<String>>(); //List to store Attributes and Play Value
-		while (input.hasNextLine()){		
-			String DataLine = input.nextLine();
-			String[] parts = DataLine.split(",");
-			List<String> x = new ArrayList<String>();
-			x.add(parts[i]);
-			x.add(parts[0]);
-			TempList.add(x);
-		}
-		
-		final String[][] SecondaryAttributeList = new String[TempList.size()][]; //Converting to StringArray
-		int j = 0;
-		for (List<String> l : TempList) 
-  		SecondaryAttributeList[j++] = l.toArray(new String[l.size()]);
-		sort(SecondaryAttributeList,0); //Sorting StringArray Alphabetically
-		double SecondaryEntropy = Solution.functionname(SecondaryAttributeList,blah);
-		return SecondaryEntropy;
+		// int count;
+		// count = count[0]+count[1];
+		//double initial = entropy(count[0] + count[1], count[0], count[1]);
+		return (dummyfunction(count[0] + count[1], 1));
 	}
-	public static void main(String[] args)	throws IOException {
-		AttributeRelevanceAnalysis Solution = new AttributeRelevanceAnalysis();
-		double SecondaryEntropy;
-		int count[] = Solution.Count();
-		List <Double> SecondaryEntropies = new ArrayList<Double>();
-		loop:while(true){
-			System.out.println("Enter your choice.\n\n\n1.Calculate Initial Entropy with respect to 'Play' Attribute\n2.Calculate Entropy for 'Outlook' Attribute\n3.Calculate Entropy for 'Temp' Attribute\n4.Calculate Entropy for 'Humidity' Attribute\n5.Calculate Entropy for 'Play' Attribute\n6.Compute Relevance Analysis\n7.Exit\n");
-			int choice = (new Scanner(System.in)).nextInt();
-			switch(choice){
-				case 1:
-					double InitialEntropy = Solution.Entropy(count[0], count[1], 1.0);
-					System.out.println("Initial Entropy = "+InitialEntropy);
-					break;
-				case 2:
-					SecondaryEntropy = Solution.CalculateSecondaryEntropy(choice-1);
-					SecondaryEntropies.add(SecondaryEntropy);
-					System.out.println(SecondaryEntropy);
-					break;
-				case 3:
-				    SecondaryEntropy = Solution.CalculateSecondaryEntropy(choice-1);
-					SecondaryEntropies.add(SecondaryEntropy);
-					System.out.println(SecondaryEntropy);
-					break;
-				case 4:
-					SecondaryEntropy = Solution.CalculateSecondaryEntropy(choice-1);
-					SecondaryEntropies.add(SecondaryEntropy);
-					System.out.println(SecondaryEntropy);
-					break;
-				case 5:
-					SecondaryEntropy = Solution.CalculateSecondaryEntropy(choice-1);
-					SecondaryEntropies.add(SecondaryEntropy);
-					System.out.println(SecondaryEntropy);
-					break;
-				case 6:
-					Double [] entropies = SecondaryEntropies.toArray(new Double[SecondaryEntropies.size()]);
-					Arrays.sort(entropies);
-					for(double abc: entropies){
-						System.out.print(abc+" ");
-					}
-					break;
-				case 7:
-					break loop;
-				default:
-					System.out.println("Incorrect Choice");
+
+	float dummyfunction(int count, int AttributeNumber) throws IOException {
+
+		Scanner input = new Scanner(new File("PlayTennis.data"));
+		int i, j;
+		List<String> al = new ArrayList<>();
+		for (i = 0; i < count; i++) {
+			String splitset = input.nextLine();
+			String[] parts = splitset.split(",");
+			al.add(parts[AttributeNumber]);
+		}
+		Set<String> hs = new HashSet<>();
+		hs.addAll(al);
+		al.clear();
+		al.addAll(hs);
+		String[] Attributes = new String[al.size()];
+		Attributes = al.toArray(Attributes);
+		int[][] yesno = new int[Attributes.length][2];
+		input.close();
+		//for(String s: Attributes)
+		//	System.out.println(s);
+		Scanner newinput = new Scanner(new File("PlayTennis.data"));
+		for (i = 0; i < count; i++) {
+			String splitset = newinput.nextLine();
+			String[] parts = splitset.split(",");
+			for (j = 0; j < Attributes.length; j++) {
+				if (parts[AttributeNumber].equalsIgnoreCase(Attributes[j]))
+					if (parts[0].equalsIgnoreCase("Yes"))
+						yesno[j][0]++;
+					else
+						yesno[j][1]++;
+
+				else
+					continue; // WHAT AM I EVEN DOING?!
 			}
 		}
+		for(i=0;i<Attributes.length;i++)/*{
+			for(j=0;j<2;j++)
+				System.out.print(yesno[i][j]+" ");
+			System.out.println();
+		}	*/
+		newinput.close();
+		float attributeentropy = 0;
+		/*for (i = 0; i < Attributes.length; i++)
+			attributeentropy += entropy(count, yesno[i][0], yesno[i][1]);*/
+		return attributeentropy;
+	}
+
+	double entropy(int count, int yes, int no) {
+		System.out.println(yes+" "+no+" "+count);
+		double p1 = (double) yes / count;
+		System.out.println(p1);
+		double p2 = (double) no / count;
+		System.out.println(p2);
+		double log1 = Math.log(p1) / Math.log(2);
+		if (!Double.isFinite(log1))
+			log1=0;
+		double log2 = Math.log(p1) / Math.log(2);
+		if (!Double.isFinite(log2))
+			log2=0;
+		System.out.println(log1+" "+log2);
+		double entropy = (double) ((yes + no) / count)*(-p1 * log1 - p2 * log2);
+		System.out.println(entropy);
+		return entropy;
+	}
+
+	public static void main(String[] args) throws IOException {
+		Attribute Solution = new Attribute();
+		System.out.println(Solution.RelevanceAnalysis(Solution));
 	}
 }
