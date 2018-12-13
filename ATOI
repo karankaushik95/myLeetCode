@@ -58,22 +58,25 @@ class Solution {
             
             
             
-                    
+            /*Check if ONLY one sign symbol and ONLY at the beginning of the string*/        
             if ((str.charAt(i)) == '-' && !start_of_number && !sign){
                 negative = true;
                 sign = true;
             }
+            /*Same but for + sign. Could've maybe combined the two cases*/
             else if ((str.charAt(i)) ==  '+' && !start_of_number &&!sign)
                     sign = true;
+            /*If not digit, break*/
             else if (!Character.isDigit(str.charAt(i)) )
                     break;
+            // Else just do the logical thing and repeat
             else{
                 number = number*10 + Character.getNumericValue(str.charAt(i));
                 start_of_number = true;
             }        
                     
             
-            
+            /*Check if exceeds 4 bytes*/
             if (number>Integer.MAX_VALUE)
                 if(negative)
                     return Integer.MIN_VALUE;
