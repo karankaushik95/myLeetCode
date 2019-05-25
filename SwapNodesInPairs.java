@@ -11,7 +11,6 @@ Given 1->2->3->4, you should return the list as 2->1->4->3.
 
 */
 
-
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -21,16 +20,11 @@ Given 1->2->3->4, you should return the list as 2->1->4->3.
  * }
  */
 class Solution {
-    public static int lengthList(ListNode head){
-        if(head == null)
-            return 0;
-        else return 1+ lengthList(head.next);
-    }
-    
+
     public ListNode swapPairs(ListNode head) {
         if (head == null)
             return null;
-        else if(lengthList(head) == 1)
+        else if(head.next == null)
             return head;
         else{
             ListNode temp = head;
